@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: record
+  
+  # H2 인메모리 데이터베이스 설정
+  datasource:
+    url: jdbc:h2:mem:recorddb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # JPA 설정
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# CORS 설정은 개발 편의를 위해 컨트롤러 클래스 상단에 @CrossOrigin(origins = "*") 어노테이션을 붙이거나,
+# 글로벌 CORS 설정을 담당하는 WebMvcConfigurer 빈을 설정 클래스에 추가하는 방식을 권장합니다.
+# 예시:
+# @Configuration
+# public class WebConfig implements WebMvcConfigurer {
+#     @Override
+#     public void addCorsMappings(CorsRegistry registry) {
+#         registry.addMapping("/**")
+#                 .allowedOrigins("*")
+#                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+#     }
+# }

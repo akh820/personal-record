@@ -1,0 +1,4 @@
+/* NativeWind v4 — Tailwind 엔트리. App 최상단에서 import "./global.css" */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
