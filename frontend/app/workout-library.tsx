@@ -1,9 +1,10 @@
 import { Pressable, ScrollView, View } from "react-native";
-import { ExerciseInfo, useWorkout } from "../src/context/WorkoutContext";
+import { useWorkout } from "../src/context/WorkoutContext";
 import { defaultExercises } from "../src/api/workoutData";
 import Text from "../src/components/AppText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { ExerciseInfo } from "../src/types/workout";
 
 export default function WorkoutLibraryScreen() {
   const router = useRouter();
