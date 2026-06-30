@@ -24,6 +24,7 @@ export default function RootLayout() {
         <Stack.Screen name="before-workout" options={{ title: "운동 시작" }} />
         <Stack.Screen name="workout-active" options={{ headerShown: false }} />
         <Stack.Screen name="workout-library" options={{ headerShown: false }} />
+        <Stack.Screen name="interval-timer" options={{ headerShown: false }} />
       </Stack>
     </WorkoutProvider>
   );

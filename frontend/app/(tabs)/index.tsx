@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SignalLine, SignalGlyph } from "../../src/components/SignalLine";
 import { useRouter } from "expo-router";
 import Text from "../../src/components/AppText";
+import Svg, { Circle, Path } from "react-native-svg";
 
 export default function HomeScreen() {
   const [timer, setTimer] = useState(0);
@@ -120,6 +121,37 @@ export default function HomeScreen() {
             </Text>
           </View>
         </View>
+
+        {/* 인터벌 타이머 진입 */}
+        <Pressable
+          onPress={() => router.push("/interval-timer")}
+          className="flex-row items-center gap-3 mt-4 px-4 h-[58px] border border-line rounded-[16px] active:bg-surface"
+        >
+          <View className="w-[38px] h-[38px] rounded-full bg-signal-tint items-center justify-center">
+            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+              <Circle cx={12} cy={12} r={9} stroke="#16A65C" strokeWidth={2} />
+              <Path
+                d="M12 7v5l3 2"
+                stroke="#16A65C"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Svg>
+          </View>
+          <Text className="flex-1 font-bold text-[15px] text-ink">
+            인터벌 타이머
+          </Text>
+          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M9 6l6 6-6 6"
+              stroke="#C4C8C6"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </Svg>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );

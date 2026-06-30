@@ -4,6 +4,7 @@ export default function BackButton({ onPress }: Props) {
   const router = useRouter();
   return (
     <Pressable
+      //괄호로 한번더 감싸서 이건 하나의 값이라고 명시함
       onPress={onPress ?? (() => router.back())}
       className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center"
     >
