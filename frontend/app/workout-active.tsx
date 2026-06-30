@@ -1,8 +1,8 @@
 import { View, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Text from "../src/components/AppText";
-import { useRouter } from "expo-router";
 import Svg, { Path } from "react-native-svg";
+import ScreenHeader from "../src/components/ScreenHeader";
 
 type SetRow = {
   no: number;
@@ -19,45 +19,28 @@ const SETS: SetRow[] = [
 ];
 
 export default function WorkoutActiveScreen() {
-  const router = useRouter();
 
   const addSet = () => {};
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* 상단 바 */}
-      <View className="flex-row items-center justify-between px-[18px] pt-1 pb-3">
-        <Pressable
-          onPress={() => router.back()}
-          className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center"
-        >
-          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-            <Path
-              d="M15 5l-7 7 7 7"
-              stroke="#14181C"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </Svg>
-        </Pressable>
-        <View className="items-center">
-          <Text className="font-bold text-[17px] text-ink">6월 27일</Text>
-          <Text className="font-medium text-[12px] text-muted">
-            상체 A · 운동 2 / 6
-          </Text>
-        </View>
-        <Pressable className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center">
-          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-            <Path
-              d="M4 7h16M4 12h16M4 17h16"
-              stroke="#14181C"
-              strokeWidth={2}
-              strokeLinecap="round"
-            />
-          </Svg>
-        </Pressable>
-      </View>
+      <ScreenHeader
+        title="6월 27일"
+        subtitle="상체 A · 운동 2 / 6"
+        right={
+          <Pressable className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center">
+            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+              <Path
+                d="M4 7h16M4 12h16M4 17h16"
+                stroke="#14181C"
+                strokeWidth={2}
+                strokeLinecap="round"
+              />
+            </Svg>
+          </Pressable>
+        }
+      />
 
       {/* 종목 카드 */}
       <View className="flex-1 mx-4 mb-3 border border-line rounded-[22px] overflow-hidden">

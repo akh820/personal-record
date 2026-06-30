@@ -5,7 +5,7 @@ import Text from "../src/components/AppText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ExerciseInfo } from "../src/types/workout";
-import Svg, { Path } from "react-native-svg";
+import ScreenHeader from "../src/components/ScreenHeader";
 
 export default function WorkoutLibraryScreen() {
   const router = useRouter();
@@ -23,33 +23,8 @@ export default function WorkoutLibraryScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ScrollView contentContainerClassName="p-6">
-        <View className="flex-row items-center px-5 py-2">
-          <View className="flex-1 items-center">
-            <Pressable
-              onPress={() => router.back()}
-              className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center"
-            >
-              <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                <Path
-                  d="M15 5l-7 7 7 7"
-                  stroke="#14181C"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
-            </Pressable>
-          </View>
-
-          <View className="flex-1 items-center">
-            <Text className="font-extrabold text-[18px] text-ink">
-              운동 라이브러리
-            </Text>
-          </View>
-          <View className="flex-1"></View>
-        </View>
-
+      <ScreenHeader title="운동 라이브러리" />
+      <ScrollView contentContainerClassName="px-6 pt-4 pb-6">
         {defaultExercises.map((exercise: ExerciseInfo) => {
           const isSelected = selectedExercises.includes(exercise.id);
           return (
