@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { View, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Text from "../src/components/AppText";
-import { useRouter } from "expo-router";
 import Svg, { Path, Line } from "react-native-svg";
+import ScreenHeader from "../src/components/ScreenHeader";
+import AdjustModal from "../src/components/AdjustModal";
 
 // 원형 눈금 (60칸, 5칸마다 길게)
 const CENTER = 140;
@@ -28,32 +30,16 @@ const CHIPS = [
   { label: "싸이클", value: "4", border: "#E8EAE8", text: "#14181C" },
 ];
 
+type Chip = (typeof CHIPS)[number];
+
 export default function IntervalTimerScreen() {
-  const router = useRouter();
+  // 어떤 칩 모달이 열렸는지 (null이면 닫힘)
+  const [openChip, setOpenChip] = useState<Chip | null>(null);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* 상단 바 */}
-      <View className="flex-row items-center px-5 pt-1 pb-2">
-        <Pressable
-          onPress={() => router.back()}
-          className="w-[38px] h-[38px] items-center justify-center"
-        >
-          <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
-            <Path
-              d="M15 5l-7 7 7 7"
-              stroke="#14181C"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </Svg>
-        </Pressable>
-        <Text className="flex-1 text-center font-bold text-[17px] text-ink">
-          인터벌 타이머
-        </Text>
-        <View className="w-[38px]" />
-      </View>
+      <ScreenHeader title="인터벌 타이머" />
 
       {/* 원형 타이머 */}
       <View className="flex-1 items-center justify-center">
@@ -80,11 +66,20 @@ export default function IntervalTimerScreen() {
           </Svg>
 
           {/* 중앙 콘텐츠 */}
-          <Text className="font-semibold text-[13px] text-muted tracking-widest uppercase">
-            총 운동시간
+          {/* 현재 단계 (운동/휴식) */}
+          <View className="bg-signal-tint px-3 py-1 rounded-full">
+            <Text className="font-bold text-[12px] text-signal-deep tracking-wider">
+              운동
+            </Text>
+          </View>
+          {/* 현재 카운트다운 */}
+          <Text className="font-mono font-bold text-[60px] text-signal-deep tracking-tight mt-2">
+            00:19
           </Text>
-          <Text className="font-mono font-bold text-[60px] text-signal-deep tracking-tight mt-1">
-            21:20
+          {/* 총 경과시간 (작게) */}
+          <Text className="font-medium text-[12px] text-muted mt-0.5">
+            총 운동시간{" "}
+            <Text className="font-mono font-semibold text-ink">21:20</Text>
           </Text>
           <Pressable className="w-[64px] h-[64px] rounded-full bg-signal items-center justify-center mt-3 active:opacity-90">
             <Svg width={26} height={26} viewBox="0 0 24 24">
@@ -97,7 +92,11 @@ export default function IntervalTimerScreen() {
       {/* 하단 설정 칩 */}
       <View className="flex-row justify-between px-7 pb-6">
         {CHIPS.map((chip) => (
-          <View key={chip.label} className="items-center gap-2">
+          <Pressable
+            key={chip.label}
+            onPress={() => setOpenChip(chip)}
+            className="items-center gap-2 active:opacity-70"
+          >
             <View
               className="w-[68px] h-[68px] rounded-full items-center justify-center border-2"
               style={{ borderColor: chip.border }}
@@ -112,9 +111,24 @@ export default function IntervalTimerScreen() {
             <Text className="font-semibold text-[12px] text-muted">
               {chip.label}
             </Text>
-          </View>
+          </Pressable>
         ))}
       </View>
+
+      {/* 설정 조절 모달 */}
+      {openChip && (
+        <AdjustModal
+          visible
+          onClose={() => setOpenChip(null)}
+          label={openChip.label}
+          value={openChip.value}
+          mode={
+            openChip.label === "운동" || openChip.label === "휴식"
+              ? "time"
+              : "count"
+          }
+        />
+      )}
     </SafeAreaView>
   );
 }
