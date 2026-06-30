@@ -2,261 +2,272 @@ import { View, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Text from "../src/components/AppText";
 import { useRouter } from "expo-router";
-import Svg, { Polyline, Circle, Path } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 
-const DUMMY_SETS = [
-  { id: "1", weight: 60, reps: 10, isCompleted: true },
-  { id: "2", weight: 60, reps: 9, isCompleted: true },
-  { id: "3", weight: 60, reps: 8, isCompleted: false },
-  { id: "4", weight: 60, reps: 8, isCompleted: false },
+type SetRow = {
+  no: number;
+  kg: string;
+  reps: string;
+  done: boolean;
+  focus: "kg" | "reps" | null;
+};
+
+const SETS: SetRow[] = [
+  { no: 1, kg: "60", reps: "10", done: true, focus: null },
+  { no: 2, kg: "60", reps: "9", done: true, focus: null },
+  { no: 3, kg: "60", reps: "8", done: false, focus: "reps" },
 ];
 
 export default function WorkoutActiveScreen() {
   const router = useRouter();
-  const currentSetIndex = 2;
+
+  const addSet = () => {};
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ScrollView
-        className="flex-1"
-        contentContainerClassName="pt-3 pb-6"
-        showsVerticalScrollIndicator={false}
-      >
-        {/* 상단 바 */}
-        <View className="flex-row items-center justify-between px-5 pt-1 pb-3">
-          <Pressable
-            onPress={() => router.back()}
-            className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center"
-          >
-            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-              <Path
-                d="M15 5l-7 7 7 7"
-                stroke="#14181C"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
-          </Pressable>
-          <View className="items-center">
-            <Text className="font-bold text-[17px] text-ink">상체 A</Text>
-            <Text className="font-medium text-[12px] text-muted">
-              운동 2 / 6
-            </Text>
-          </View>
-          <View
-            className="flex-row items-center gap-2 h-[38px] px-3 rounded-xl"
-            style={{ backgroundColor: "#14181C" }}
-          >
-            <Svg width={18} height={10} viewBox="0 0 18 10">
-              <Polyline
-                points="0,8 3,7 5,2 8,9 11,7 14,1 18,6"
-                fill="none"
-                stroke="#16A65C"
-                strokeWidth={1.6}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
-            <Text className="font-mono font-semibold text-[14px] text-white">
-              42:18
-            </Text>
-          </View>
-        </View>
-
-        {/* 휴식 바 */}
-        <View className="mx-5 mb-4 bg-signal-tint border border-signal-line rounded-[15px] p-3.5">
-          <View className="flex-row items-center justify-between mb-2">
-            <Text className="font-semibold text-[13px] text-signal-deep">
-              휴식 중
-            </Text>
-            <View className="flex-row items-center gap-2.5">
-              <Text className="font-mono font-semibold text-[15px] text-signal-deep">
-                01:12
-              </Text>
-              <View className="px-2 py-1 border border-signal-line rounded-lg">
-                <Text className="font-mono font-semibold text-[12px] text-signal-deep">
-                  +15s
-                </Text>
-              </View>
-            </View>
-          </View>
-          <Svg width="100%" height={26} viewBox="0 0 312 26">
-            <Polyline
-              points="0,18 24,17 40,9 58,20 80,19 100,6 124,21 150,20 174,12"
-              fill="none"
-              stroke="#16A65C"
+      {/* 상단 바 */}
+      <View className="flex-row items-center justify-between px-[18px] pt-1 pb-3">
+        <Pressable
+          onPress={() => router.back()}
+          className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center"
+        >
+          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M15 5l-7 7 7 7"
+              stroke="#14181C"
               strokeWidth={2}
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <Polyline
-              points="174,12 196,21 220,8 244,18 268,17 290,13 312,15"
-              fill="none"
-              stroke="#C9E8D8"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <Circle cx={174} cy={12} r={3.5} fill="#16A65C" />
           </Svg>
+        </Pressable>
+        <View className="items-center">
+          <Text className="font-bold text-[17px] text-ink">6월 27일</Text>
+          <Text className="font-medium text-[12px] text-muted">
+            상체 A · 운동 2 / 6
+          </Text>
+        </View>
+        <Pressable className="w-[38px] h-[38px] rounded-xl bg-surface items-center justify-center">
+          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M4 7h16M4 12h16M4 17h16"
+              stroke="#14181C"
+              strokeWidth={2}
+              strokeLinecap="round"
+            />
+          </Svg>
+        </Pressable>
+      </View>
+
+      {/* 종목 카드 */}
+      <View className="flex-1 mx-4 mb-3 border border-line rounded-[22px] overflow-hidden">
+        {/* 카드 헤더 */}
+        <View className="flex-row items-center gap-3 px-4 pt-4 pb-3">
+          <Text className="font-mono font-bold text-[15px] text-signal">
+            01
+          </Text>
+          <View className="flex-1">
+            <Text className="font-bold text-[18px] text-ink">벤치프레스</Text>
+            <Text className="font-medium text-[12px] text-muted mt-0.5">
+              바벨 · 가슴
+            </Text>
+          </View>
+          <View className="w-[30px] h-[30px] rounded-full border border-[#E1E4E3] items-center justify-center">
+            <Text className="font-mono font-bold text-[13px] text-muted">
+              i
+            </Text>
+          </View>
+          <View className="gap-[3px] items-center px-1">
+            <View className="w-1 h-1 rounded-full bg-faint" />
+            <View className="w-1 h-1 rounded-full bg-faint" />
+            <View className="w-1 h-1 rounded-full bg-faint" />
+          </View>
         </View>
 
-        {/* 종목 카드 */}
-        <View className="mx-4 border border-line rounded-[20px] overflow-hidden">
-          {/* 종목 헤더 */}
-          <View className="flex-row items-center justify-between px-[18px] pt-4 pb-3">
-            <View>
-              <Text className="font-bold text-[18px] text-ink">벤치프레스</Text>
-              <Text className="font-medium text-[12px] text-muted mt-0.5">
-                바벨 · 가슴
+        {/* 총 볼륨 / 최근 기록 */}
+        <View className="flex-row items-center justify-between px-4 pb-3">
+          <Text className="font-medium text-[13px] text-[#4B5256]">
+            총 볼륨{" "}
+            <Text className="font-mono font-semibold text-[14px] text-ink">
+              1,140 kg
+            </Text>
+          </Text>
+          <View className="border border-line rounded-[9px] px-[11px] py-[5px]">
+            <Text className="font-semibold text-[11px] text-[#4B5256]">
+              최근 기록
+            </Text>
+          </View>
+        </View>
+
+        {/* 메모 카드 */}
+        <View className="mx-[14px] mb-3 bg-surface rounded-[10px] px-3.5 py-3">
+          <View className="flex-row items-center gap-2 mb-1.5">
+            <Text className="font-mono font-semibold text-[11px] text-signal-deep">
+              25-05-02 금
+            </Text>
+            <View className="bg-signal-tint border border-signal-line rounded-md px-[7px] py-0.5">
+              <Text className="font-semibold text-[10px] text-signal-deep">
+                메모
               </Text>
             </View>
-            <View className="gap-[3px] items-center">
-              <View className="w-1 h-1 rounded-full bg-faint" />
-              <View className="w-1 h-1 rounded-full bg-faint" />
-              <View className="w-1 h-1 rounded-full bg-faint" />
-            </View>
           </View>
+          <Text className="font-medium text-[13px] text-[#6B7178] leading-5">
+            4×8 · 천천히 내리고 빠르게 밀기, 약지가 바에 걸치는 그립
+          </Text>
+        </View>
 
-          {/* 테이블 헤더 */}
-          <View className="flex-row px-[18px] pb-2">
-            <Text className="w-[46px] font-semibold text-[11px] text-muted tracking-wider uppercase">
-              세트
-            </Text>
-            <Text className="flex-1 font-semibold text-[11px] text-muted tracking-wider uppercase text-center">
-              KG
-            </Text>
-            <Text className="flex-1 font-semibold text-[11px] text-muted tracking-wider uppercase text-center">
-              횟수
-            </Text>
-            <View className="w-[48px]" />
-          </View>
+        {/* 테이블 헤더 */}
+        <View className="flex-row gap-2 px-4 pb-2">
+          <Text className="w-[42px] text-center font-semibold text-[11px] text-muted tracking-wider uppercase">
+            세트
+          </Text>
+          <Text className="flex-1 text-center font-semibold text-[11px] text-muted tracking-wider uppercase">
+            kg
+          </Text>
+          <Text className="flex-1 text-center font-semibold text-[11px] text-muted tracking-wider uppercase">
+            회
+          </Text>
+          <Text className="w-[52px] text-center font-semibold text-[11px] text-muted tracking-wider uppercase">
+            완료
+          </Text>
+        </View>
 
-          {/* 세트 행 */}
-          {DUMMY_SETS.map((set, index) => {
-            const isCurrent = index === currentSetIndex;
-            const isCompleted = set.isCompleted;
-            const isFuture = index > currentSetIndex;
-
-            return (
+        {/* 세트 리스트 */}
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          {SETS.map((set) => (
+            <View
+              key={set.no}
+              className="flex-row gap-2 items-center px-4 py-[5px]"
+            >
+              {/* 세트 번호 칩 */}
               <View
-                key={set.id}
-                className={`flex-row items-center px-[18px] py-3.5 border-t border-[#F0F2F1] ${
-                  isCurrent
-                    ? "bg-signal-tint"
-                    : isCompleted
-                      ? "bg-[#FAFBFA]"
-                      : ""
+                className={`w-[42px] h-[46px] rounded-[5px] items-center justify-center ${
+                  set.done ? "bg-surface" : "bg-signal-tint"
                 }`}
               >
-                {/* 현재 세트 좌측 강조 바 (레이아웃을 밀지 않도록 절대 위치) */}
-                {isCurrent && (
-                  <View className="absolute left-0 top-0 bottom-0 w-[3px] bg-signal" />
-                )}
                 <Text
-                  className={`w-[46px] font-mono text-[15px] ${
-                    isCurrent
-                      ? "font-bold text-signal-deep"
-                      : isFuture
-                        ? "font-medium text-faint"
-                        : "font-medium text-muted"
+                  className={`font-mono text-[14px] ${
+                    set.done
+                      ? "font-semibold text-muted"
+                      : "font-bold text-signal-deep"
                   }`}
                 >
-                  {index + 1}
+                  {set.no}
                 </Text>
+              </View>
+
+              {/* kg 값 박스 */}
+              <View
+                className={`flex-1 h-[46px] rounded-[5px] items-center justify-center border ${
+                  set.focus === "kg"
+                    ? "bg-signal-tint border-signal"
+                    : "bg-[#FAFBFA] border-line"
+                }`}
+              >
                 <Text
-                  className={`flex-1 font-mono text-center ${
-                    isCurrent
-                      ? "font-semibold text-[18px] text-ink"
-                      : isFuture
-                        ? "font-medium text-[16px] text-faint"
-                        : "font-medium text-[16px] text-[#4B5256]"
+                  className={`font-mono font-semibold text-[18px] ${
+                    set.focus === "kg" ? "text-signal-deep" : "text-ink"
                   }`}
                 >
-                  {set.weight}
+                  {set.kg}
                 </Text>
+              </View>
+
+              {/* 회 값 박스 */}
+              <View
+                className={`flex-1 h-[46px] rounded-[5px] items-center justify-center border ${
+                  set.focus === "reps"
+                    ? "bg-signal-tint border-signal"
+                    : "bg-[#FAFBFA] border-line"
+                }`}
+              >
                 <Text
-                  className={`flex-1 font-mono text-center ${
-                    isCurrent
-                      ? "font-semibold text-[18px] text-ink"
-                      : isFuture
-                        ? "font-medium text-[16px] text-faint"
-                        : "font-medium text-[16px] text-[#4B5256]"
+                  className={`font-mono font-semibold text-[18px] ${
+                    set.focus === "reps" ? "text-signal-deep" : "text-ink"
                   }`}
                 >
                   {set.reps}
                 </Text>
-                <View className="w-[48px] items-end">
-                  {isCompleted ? (
-                    <View className="w-6 h-6 rounded-full bg-signal items-center justify-center">
-                      <Svg
-                        width={13}
-                        height={13}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <Path
-                          d="M5 12l5 5L20 7"
-                          stroke="#fff"
-                          strokeWidth={3.2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </Svg>
-                    </View>
-                  ) : (
-                    <View
-                      className={`w-6 h-6 rounded-full border-2 ${
-                        isCurrent ? "border-signal-line" : "border-line"
-                      }`}
-                    />
-                  )}
-                </View>
               </View>
-            );
-          })}
 
-          {/* 세트 추가 */}
-          <Pressable className="flex-row items-center gap-2 px-[18px] py-3.5 border-t border-[#F0F2F1]">
+              {/* 완료 체크 */}
+              <View
+                className={`w-[52px] h-[46px] rounded-[5px] items-center justify-center ${
+                  set.done ? "bg-signal" : "bg-[#EFF1F0]"
+                }`}
+              >
+                <Svg width={17} height={17} viewBox="0 0 24 24" fill="none">
+                  <Path
+                    d="M5 12l5 5L20 7"
+                    stroke={set.done ? "#fff" : "#C4C8C6"}
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </Svg>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+
+        {/* 세트 삭제 / 추가 */}
+        <View className="flex-row border-t border-[#F0F2F1]">
+          <Pressable className="flex-1 flex-row items-center justify-center gap-2 py-[15px] border-r border-[#F0F2F1]">
             <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
               <Path
-                d="M12 5v14M5 12h14"
-                stroke="#8C9296"
-                strokeWidth={2}
+                d="M6 12h12"
+                stroke="#9BA1A4"
+                strokeWidth={2.2}
                 strokeLinecap="round"
               />
             </Svg>
             <Text className="font-semibold text-[14px] text-muted">
-              세트 추가
+              세트 삭제
             </Text>
           </Pressable>
+          <Pressable
+            onPress={() => addSet()}
+            className="flex-1 flex-row items-center justify-center gap-2 py-[15px]"
+          >
+            <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+              <Path
+                d="M12 6v12M6 12h12"
+                stroke="#16A65C"
+                strokeWidth={2.2}
+                strokeLinecap="round"
+              />
+            </Svg>
+            <Text className="font-bold text-[14px] text-signal">세트 추가</Text>
+          </Pressable>
         </View>
-      </ScrollView>
+      </View>
 
-      {/* 하단 고정 푸터 — 항상 화면 맨 아래 */}
-      <View className="px-4 py-3 border-[#F0F2F1] bg-white">
-        <Pressable
-          className="h-[56px] bg-signal rounded-[17px] flex-row items-center justify-center gap-2 active:opacity-90"
-          style={{
-            shadowColor: "#16A65C",
-            shadowOpacity: 0.25,
-            shadowRadius: 12,
-            shadowOffset: { width: 0, height: 4 },
-            elevation: 6,
-          }}
-        >
-          <Svg width={20} height={11} viewBox="0 0 20 11">
-            <Polyline
-              points="0,9 3,8 6,2 9,10 12,8 15,1 20,7"
-              fill="none"
-              stroke="#fff"
-              strokeWidth={1.8}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </Svg>
-          <Text className="font-bold text-[16px] text-white">세트 완료</Text>
+      {/* 하단 푸터 — 휴식/운동 시간 + 운동 완료 */}
+      <View className="flex-row items-center gap-3 px-4 pt-1 pb-2">
+        <View className="flex-row items-center gap-3 px-3.5 py-2.5 rounded-[15px] bg-surface">
+          <View>
+            <View className="flex-row items-center gap-1.5">
+              <View className="w-1.5 h-1.5 rounded-full bg-signal" />
+              <Text className="font-semibold text-[11px] text-signal-deep">
+                휴식 중
+              </Text>
+            </View>
+            <Text className="font-mono font-semibold text-[16px] text-ink mt-0.5">
+              01:12
+            </Text>
+          </View>
+          <View className="w-[1px] h-8 bg-[#E0E3E2]" />
+          <View>
+            <Text className="font-semibold text-[11px] text-muted">
+              운동 시간
+            </Text>
+            <Text className="font-mono font-semibold text-[16px] text-ink mt-0.5">
+              42:18
+            </Text>
+          </View>
+        </View>
+        <Pressable className="flex-1 h-[54px] bg-signal rounded-[16px] items-center justify-center active:opacity-90">
+          <Text className="font-bold text-[16px] text-white">운동 완료</Text>
         </Pressable>
       </View>
     </SafeAreaView>
