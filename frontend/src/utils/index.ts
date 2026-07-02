@@ -1,5 +1,6 @@
 // 초(seconds) → "mm:ss" 문자열 (예: 80 → "01:20")
 export const formatTimeMMSS = (totalSec: number): string => {
+  totalSec = Math.max(0, totalSec);
   const min = Math.floor(totalSec / 60);
   const sec = totalSec % 60;
   // padStart(2, "0"): 한 자리면 앞에 0 붙여 두 자리로 (5 → "05")
