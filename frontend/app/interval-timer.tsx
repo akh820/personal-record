@@ -294,7 +294,7 @@ export default function IntervalTimerScreen() {
       </View>
 
       {/* 설정 조절 모달 */}
-      {openChip && (
+      {openChip && ( // 형식상 넘겨줌
         <AdjustModal
           visible
           onClose={() => setOpenChip(null)}
