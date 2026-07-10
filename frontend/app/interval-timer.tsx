@@ -6,6 +6,7 @@ import Svg, { Path, Line } from "react-native-svg";
 import ScreenHeader from "../src/components/ScreenHeader";
 import AdjustModal from "../src/components/AdjustModal";
 import { formatTimeMMSS as formatTimeMMSS } from "../src/utils";
+import { useAudioPlayer } from "expo-audio";
 
 // 원형 눈금 (60칸, 5칸마다 길게)
 const CENTER = 140;
@@ -65,6 +66,8 @@ export default function IntervalTimerScreen() {
   // useRef의 구조는 => { current: 값(초기 null) }
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const beepPlayer = useAudioPlayer(require("../assets/sounds/beep.wav"));
+
   const [isRunning, setIsRunning] = useState(false);
 
   const [config, setConfig] = useState({
@@ -82,6 +85,11 @@ export default function IntervalTimerScreen() {
     curCycle: 1, // 현재 싸이클 (1부터)
     done: false, // 전체 종료 여부
   });
+
+  const beep = () => {
+    beepPlayer.seekTo(0); // 처음으로 되감기
+    beepPlayer.play();
+  };
 
   const start = () => {
     //운동 진행중인지 아닌지?
@@ -107,12 +115,19 @@ export default function IntervalTimerScreen() {
 
         const next = prev.remaining - 1;
 
-        if (next) {
-          // 0이면 falsy라 0이 되는순간
+        if (next > 0) {
+          return {
+            ...prev,
+            remaining: next,
+            elapsed: prev.elapsed + 1,
+          };
+        }
+
+        if (prev.phase === "work") {
           return {
             ...prev,
             phase: "rest",
-            remaining: config.workSec,
+            remaining: config.restSec,
             elapsed: prev.elapsed + 1,
           };
         }
@@ -150,6 +165,28 @@ export default function IntervalTimerScreen() {
       });
     }, 1000);
   };
+
+  const stop = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  // 전체 종료되면 타이머 정지 (side effect는 useEffect에서)
+  useEffect(() => {
+    if (progress.done) {
+      stop();
+      setIsRunning(false);
+    }
+  }, [progress.done]);
+
+  // 3,2,1초 남았을 때 비프
+  useEffect(() => {
+    if (progress.remaining > 0 && progress.remaining <= 3) {
+      beep();
+    }
+  }, [progress.remaining]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
