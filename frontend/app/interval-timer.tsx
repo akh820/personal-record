@@ -6,7 +6,7 @@ import Svg, { Path, Line } from "react-native-svg";
 import ScreenHeader from "../src/components/ScreenHeader";
 import AdjustModal from "../src/components/AdjustModal";
 import { formatTimeMMSS as formatTimeMMSS } from "../src/utils";
-import { useAudioPlayer } from "expo-audio";
+import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 
 // 원형 눈금 (60칸, 5칸마다 길게)
 const CENTER = 140;
@@ -187,6 +187,13 @@ export default function IntervalTimerScreen() {
       beep();
     }
   }, [progress.remaining]);
+
+  useEffect(() => {
+    setAudioModeAsync({
+      playsInSilentMode: true,
+      interruptionMode: "duckOthers",
+    });
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
