@@ -11,7 +11,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.frontend",
       "infoPlist": {
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": ["audio"],
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {
